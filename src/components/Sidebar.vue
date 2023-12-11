@@ -1,0 +1,303 @@
+<script>
+
+    export default {
+        computed: {
+            ishomeCrudActive() {
+                return this.$route.matched.some(route => route.path === '/');
+            },
+            isAccountCrudActive() {
+                return this.$route.matched.some(route => route.path === '/accounts' || route.path === '/add-account' || route.name === 'EditAccount');
+            },
+            isUserCrudActive() {
+                return this.$route.matched.some(route => route.path === '/userlist' || route.path === '/add-user' || route.name === 'EditUser');
+            },
+            isRoleCrudActive() {
+                return this.$route.matched.some(route => route.path === '/roles' || route.path === '/add-role' || route.name === 'EditRole');
+            }
+        },
+        data() {
+            return {
+                mainSidebarActive: true,
+                miniSidebarActive: false
+            }
+        },
+        created() {
+            const mainSidebarActive = localStorage.getItem('mainSidebarActive');
+            const miniSidebarActive = localStorage.getItem('miniSidebarActive');
+
+            if (mainSidebarActive !== null) {
+                this.mainSidebarActive = JSON.parse(mainSidebarActive);
+            }
+            if (miniSidebarActive !== null) {
+                this.miniSidebarActive = JSON.parse(miniSidebarActive);
+            }
+        },
+        watch: {
+            mainSidebarActive(newVal) {
+                localStorage.setItem('mainSidebarActive', newVal);
+            },
+            miniSidebarActive(newVal) {
+                localStorage.setItem('miniSidebarActive', newVal);
+            }
+        },
+        methods: {
+            toggleSidebar() {
+                this.mainSidebarActive = !this.mainSidebarActive;
+                this.miniSidebarActive = !this.miniSidebarActive;
+            },
+            CloseMenuMini() {
+                this.mainSidebarActive = !this.mainSidebarActive;
+                this.miniSidebarActive = !this.miniSidebarActive;
+            }
+        }
+    }
+
+</script>
+
+<template>
+    <aside class="main-sidebar" :class="{ 'main-sidebar-deactive': miniSidebarActive === true }">
+
+        <div class="sidebar-content">
+
+            <div class="sidebar-avatar-header margin-bottom_24px">
+
+                <div class="user-profile-avatar">
+                    <img
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&amp;fit=crop&amp;q=80&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&amp;w=1374">
+                </div>
+
+                <div class="user-profile-btn" id="Open_mini_sidebar"
+                    @click="miniSidebarActive = true, mainSidebarActive = false">
+                    <img src="../assets/img/icons/burger-menu.svg" class="img-not-selected">
+                </div>
+
+                <div class="user-profile-btn" id="Responsive_Close_sidebar">
+                    <img src="../assets/img/icons/close-icon.svg" class="img-not-selected close-menu">
+                </div>
+
+            </div>
+
+
+            <div class="sidebar-main-content">
+
+
+                <ul class="main-pages-list">
+
+                    <li class="list-items">
+                        <router-link to="/" class="list-link" active-class="link_active">
+                            <div class="link-items">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M14.25 19.499V14.999C14.25 14.8001 14.171 14.6093 14.0303 14.4686C13.8897 14.328 13.6989 14.249 13.5 14.249H10.5C10.3011 14.249 10.1103 14.328 9.96967 14.4686C9.82902 14.6093 9.75 14.8001 9.75 14.999V19.499C9.75 19.6979 9.67098 19.8887 9.53033 20.0293C9.38968 20.17 9.19891 20.249 9 20.249H4.5C4.30109 20.249 4.11032 20.17 3.96967 20.0293C3.82902 19.8887 3.75 19.6979 3.75 19.499V10.8271C3.75168 10.7233 3.77411 10.6209 3.81597 10.5259C3.85783 10.4309 3.91828 10.3453 3.99375 10.274L11.4937 3.45836C11.632 3.33187 11.8126 3.26172 12 3.26172C12.1874 3.26172 12.368 3.33187 12.5062 3.45836L20.0062 10.274C20.0817 10.3453 20.1422 10.4309 20.184 10.5259C20.2259 10.6209 20.2483 10.7233 20.25 10.8271V19.499C20.25 19.6979 20.171 19.8887 20.0303 20.0293C19.8897 20.17 19.6989 20.249 19.5 20.249H15C14.8011 20.249 14.6103 20.17 14.4697 20.0293C14.329 19.8887 14.25 19.6979 14.25 19.499Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <p class="link-title">Home</p>
+                            </div>
+                        </router-link>
+                    </li>
+
+                    <li class="list-items">
+                        <router-link to="/userlist" class="list-link" :class="{ link_active: isUserCrudActive }">
+                            <div class="link-items">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M8.25 15C10.9424 15 13.125 12.8174 13.125 10.125C13.125 7.43261 10.9424 5.25 8.25 5.25C5.55761 5.25 3.375 7.43261 3.375 10.125C3.375 12.8174 5.55761 15 8.25 15Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-miterlimit="10" />
+                                    <path
+                                        d="M14.5684 5.42813C14.9993 5.31124 15.4437 5.25136 15.8902 5.25C17.1832 5.25 18.4231 5.76361 19.3374 6.67785C20.2516 7.59209 20.7652 8.83207 20.7652 10.125C20.7652 11.4179 20.2516 12.6579 19.3374 13.5721C18.4231 14.4864 17.1832 15 15.8902 15"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M1.5 18.5066C2.2612 17.4234 3.27191 16.5393 4.44676 15.9289C5.6216 15.3186 6.92608 15 8.25 15C9.57392 15 10.8784 15.3186 12.0532 15.9289C13.2281 16.5393 14.2388 17.4234 15 18.5066"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M15.8906 15C17.2147 14.9992 18.5194 15.3174 19.6944 15.9277C20.8693 16.5381 21.8799 17.4225 22.6406 18.5063"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <p class="link-title">User</p>
+                            </div>
+                        </router-link>
+                    </li>
+
+                    <li class="list-items">
+                        <router-link to="/accounts" class="list-link" :class="{ link_active: isAccountCrudActive }">
+                            <div class="link-items">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path d="M2.25 9H21.75L12 3L2.25 9Z" stroke="#6B7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M5.25 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M9.75 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M14.25 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M18.75 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M3 16.5H21" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M1.5 19.5H22.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <p class="link-title">Account</p>
+                            </div>
+                        </router-link>
+                    </li>
+                    <li class="list-items">
+                        <router-link to="/roles" class="list-link" :class="{ link_active: isRoleCrudActive }">
+                            <div class="link-items">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M12 12V3" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M19.7907 7.5L4.20947 16.5" stroke="#6B7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <p class="link-title">Roles & permissions</p>
+                            </div>
+                        </router-link>
+                    </li>
+                </ul>
+
+            </div>
+
+
+        </div>
+
+
+    </aside>
+
+
+    <aside class="mini-main-sidebar" :class="{ 'mini-main-sidebar-deactive': mainSidebarActive === true }">
+
+        <div class="sidebar-content">
+
+            <div class="openmainSidebar" @click="toggleSidebar">
+                <img src="../assets/img/icons/chevron-right.svg" />
+            </div>
+
+            <div class="sidebar-main-content">
+
+
+                <ul class="main-pages-list">
+
+                    <li class="list-items">
+                        <router-link to="/" class="list-link" active-class="link_active">
+                            <div class="link-items">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M14.25 19.499V14.999C14.25 14.8001 14.171 14.6093 14.0303 14.4686C13.8897 14.328 13.6989 14.249 13.5 14.249H10.5C10.3011 14.249 10.1103 14.328 9.96967 14.4686C9.82902 14.6093 9.75 14.8001 9.75 14.999V19.499C9.75 19.6979 9.67098 19.8887 9.53033 20.0293C9.38968 20.17 9.19891 20.249 9 20.249H4.5C4.30109 20.249 4.11032 20.17 3.96967 20.0293C3.82902 19.8887 3.75 19.6979 3.75 19.499V10.8271C3.75168 10.7233 3.77411 10.6209 3.81597 10.5259C3.85783 10.4309 3.91828 10.3453 3.99375 10.274L11.4937 3.45836C11.632 3.33187 11.8126 3.26172 12 3.26172C12.1874 3.26172 12.368 3.33187 12.5062 3.45836L20.0062 10.274C20.0817 10.3453 20.1422 10.4309 20.184 10.5259C20.2259 10.6209 20.2483 10.7233 20.25 10.8271V19.499C20.25 19.6979 20.171 19.8887 20.0303 20.0293C19.8897 20.17 19.6989 20.249 19.5 20.249H15C14.8011 20.249 14.6103 20.17 14.4697 20.0293C14.329 19.8887 14.25 19.6979 14.25 19.499Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </router-link>
+                    </li>
+
+                    <li class="list-items">
+                        <router-link to="/userlist" class="list-link" :class="{ link_active: isUserCrudActive }">
+                            <div class="link-items">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M8.25 15C10.9424 15 13.125 12.8174 13.125 10.125C13.125 7.43261 10.9424 5.25 8.25 5.25C5.55761 5.25 3.375 7.43261 3.375 10.125C3.375 12.8174 5.55761 15 8.25 15Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-miterlimit="10" />
+                                    <path
+                                        d="M14.5684 5.42813C14.9993 5.31124 15.4437 5.25136 15.8902 5.25C17.1832 5.25 18.4231 5.76361 19.3374 6.67785C20.2516 7.59209 20.7652 8.83207 20.7652 10.125C20.7652 11.4179 20.2516 12.6579 19.3374 13.5721C18.4231 14.4864 17.1832 15 15.8902 15"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M1.5 18.5066C2.2612 17.4234 3.27191 16.5393 4.44676 15.9289C5.6216 15.3186 6.92608 15 8.25 15C9.57392 15 10.8784 15.3186 12.0532 15.9289C13.2281 16.5393 14.2388 17.4234 15 18.5066"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M15.8906 15C17.2147 14.9992 18.5194 15.3174 19.6944 15.9277C20.8693 16.5381 21.8799 17.4225 22.6406 18.5063"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </router-link>
+                    </li>
+
+                    <li class="list-items">
+                        <router-link to="/accounts" class="list-link" :class="{ link_active: isAccountCrudActive }">
+                            <div class="link-items">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path d="M2.25 9H21.75L12 3L2.25 9Z" stroke="#6B7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M5.25 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M9.75 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M14.25 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M18.75 9V16.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M3 16.5H21" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M1.5 19.5H22.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </router-link>
+                    </li>
+
+                    <li class="list-items">
+                        <router-link to="/roles" class="list-link" :class="{ link_active: isRoleCrudActive }">
+                            <div class="link-items">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+                                        stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M12 12V3" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M19.7907 7.5L4.20947 16.5" stroke="#6B7280" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </router-link>
+                    </li>
+
+
+                </ul>
+
+
+            </div>
+
+
+        </div>
+
+
+    </aside>
+</template>
+
+<style scoped>
+    .openmainSidebar {
+        position: absolute;
+        border: 1px solid var(--Grey-20);
+        width: 34px;
+        height: 34px;
+        right: -12px;
+        top: 9px;
+        z-index: 101;
+        border-radius: 999px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding-left: 3px;
+    }
+</style>
