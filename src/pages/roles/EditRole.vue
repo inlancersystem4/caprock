@@ -34,6 +34,7 @@ export default {
             selectedModule: "",
             selectedModuleName: "",
             joinedPermissions: "",
+            checkedinput: "",
             moduleList: [],
             permissionsList: [],
             checkedPermissions: [],
@@ -45,7 +46,6 @@ export default {
         this.prole_name = this.$route.params.name;
         this.featchModuleList();
         this.featchRoleList();
-        this.featchPermissionsList();
     },
     mounted() {
         this.prole_name = this.$route.params.name;
@@ -62,6 +62,12 @@ export default {
 
                 this.roleName = response.data.role_name
                 this.selectedOptionArr = response.data.role_module
+
+                this.selectedModuleName = response.data.role_module.map(list => list.module_name).join(', ')
+                this.selectedModule = response.data.role_module.map(list => list.module_id).join(', ')
+                this.checkedinput = response.data.role_permission
+
+                this.featchPermissionsList();
 
 
             } catch (error) {
@@ -94,9 +100,11 @@ export default {
         selectedMulti(data) {
             this.selectedModule = data.map(item => item.module_id).join(',');
             this.selectedModuleName = data.map(item => item.module_name).join(',');
+            this.featchPermissionsList();
         },
         isChecked(permissionId) {
-            return this.checkedPermissions.includes(permissionId)
+            return this.checkedinput.split(',').includes(permissionId.toString()) ||
+                this.checkedPermissions.includes(permissionId);
         },
         updatePermission(permissionId, checked) {
             if (checked) {
