@@ -1,11 +1,16 @@
 <script>
 
 import { useAuthStore, useAlertStore } from "@/stores";
+import { fetchWrapper } from "@/helpers";
+import axios from "axios";
 import DeleteModel from '../subcomponents/common/DeleteModel.vue';
 
 export default {
     components: {
-        DeleteModel
+        DeleteModel,
+        useAuthStore,
+        useAlertStore,
+        fetchWrapper
     },
     data() {
         return {

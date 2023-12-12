@@ -69,6 +69,8 @@ export default {
 
                 this.featchPermissionsList();
 
+                console.log(this.selectedModule)
+
 
             } catch (error) {
                 console.log(error);
@@ -97,10 +99,30 @@ export default {
                 console.log(error);
             }
         },
+
         selectedMulti(data) {
-            this.selectedModule = data.map(item => item.module_id).join(',');
-            this.selectedModuleName = data.map(item => item.module_name).join(',');
+            // this.selectedModule = data.map(item => item.module_id).join(',');
+            // this.selectedModuleName = data.map(item => item.module_name).join(',');
+
+
+            const newModuleIds = data.map(item => item.module_id);
+            const uniqueModuleIds = [...new Set([...this.selectedModule.split(','), ...newModuleIds])];
+
+            this.selectedModule = uniqueModuleIds.join(',');
+
+
+            const newModuleNames = data.map(item => item.module_name);
+            const uniqueModuleNames = [...new Set([...this.selectedModuleName.split(','), ...newModuleNames])];
+
+            this.selectedModuleName = uniqueModuleNames.join(',');
+
             this.featchPermissionsList();
+        },
+        selectedOptionDel(data) {
+            const moduleIdToRemove = data.module_id.toString();
+            const moduleIds = this.selectedModule.split(',');
+            const filteredModuleIds = moduleIds.filter(id => id !== moduleIdToRemove);
+            this.selectedModule = filteredModuleIds.join(',');
         },
         isChecked(permissionId) {
             return this.checkedinput.split(',').includes(permissionId.toString()) ||
@@ -119,10 +141,13 @@ export default {
         async addRole() {
             this.joinedPermissions = Object.values(this.checkedPermissions);
 
+            const formattedSelectedModule = this.selectedModule.replace(/\s/g, '');
+
+
             var role_data = new FormData();
             role_data.append("role_id", this.roleId);
             role_data.append("role_name", this.roleName);
-            role_data.append("role_module", this.selectedModule);
+            role_data.append("role_module", formattedSelectedModule);
             role_data.append("role_permission", this.joinedPermissions.join(','));
 
             try {
@@ -130,6 +155,10 @@ export default {
 
                 if (data.success === 1) {
                     this.$router.push({ name: 'Roles' });
+                    console.log(this.roleId)
+                    console.log(this.roleName)
+                    console.log(this.selectedModule)
+                    console.log(this.joinedPermissions.join(','))
                 }
 
             }
@@ -155,6 +184,9 @@ export default {
                     <br />
                     <br />
                     {{ selectedOptionArr }}
+                    <br />
+                    <br />
+                    {{ selectedModule }}
 
                     <div class="space-y-8px">
                         <Label label="Role Name" />
@@ -168,7 +200,7 @@ export default {
                     <div class="space-y-8px">
                         <Label label="Select Module" />
                         <MultiSelect :options="moduleList" @option-selected="selectedMulti"
-                            :responseData="selectedOptionArr" />
+                            :responseData="selectedOptionArr" @selected-option_Del="selectedOptionDel" />
                     </div>
 
                     <div></div>

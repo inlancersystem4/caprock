@@ -1,11 +1,11 @@
 <script  >
-import { Field, Form, ErrorMessage } from "vee-validate";
+import { Field, Form } from "vee-validate";
 import axios from 'axios';
+import { useAuthStore } from "../stores";
 
 import OverLaye from '../subcomponents/common/OverLaye.vue';
-// import ErrorMessage from '../subcomponents/ErrorMessage.vue';
+import ErrorMessage from '../subcomponents/common/ErrorMessage.vue';
 
-import { useAuthStore } from "../stores";
 
 
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
@@ -25,13 +25,26 @@ export default {
             password: "",
             overlay: false,
             fromSubmited: false,
+            isvalidEmail: true,
         }
     },
     created() {
         this.checkUser()
     },
+    computed: {
+        loginBtn() {
+            return !this.email.trim() || !this.password.trim() || !this.isvalidEmail
+        }
+    },
     methods: {
+        validateEmail() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(this.email);
+        },
         async onSubmit(values) {
+
+            this.fromSubmited = true
+
             const authStore = useAuthStore();
             const { email, password } = values;
             await authStore.login(email, password);
@@ -117,34 +130,34 @@ export default {
 </script>
 
 <template>
-    <div class="auth-page">
+    <div class="auth-page auth-page_center">
 
 
         <div class="auth-container">
 
-            <div class="space-y-4px auth-title">
-
-                <h1 class="color-Grey_90 text-2xl_semibold">Sign In</h1>
-                <h6 class="color-Grey_50 text-base_regular">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Quis commodi, beatae dolorem
-                    repellat reiciendis accusantium ut.</h6>
-
-            </div>
-
-
-
             <div class="auth-from-section">
+
+
                 <Form @submit="onSubmit" class="from space-y-24px">
 
+                    <!-- <img src="../assets/img/logo.png" class="logo"> -->
+
+                    <div class="space-y-4px auth-title">
+
+                        <h1 class="color-Grey_90 text-2xl_semibold">Sign In</h1>
+                        <h6 class="color-Grey_50 text-base_regular">Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit.
+                            Quis commodi, beatae dolorem
+                            repellat reiciendis accusantium ut.</h6>
+
+                    </div>
 
                     <div class="input-group">
                         <label for="">Email</label>
-                        <Field name="email" :rules="validateEmail" class="input-1" type="email"
-                            placeholder="Enter Email id" />
-                        <ErrorMessage name="email" class="text-red-600 block mt-2" />
-                        <!-- <input type="email" class="input-1" :class="getInputError(email)" v-model="email">
-                                <ErrorMessage msg="Email Is reqired" v-if="!email && fromSubmited" /> -->
-
+                        <Field name="email" :rules="validateEmail" class="input-1" type="email" placeholder="Enter Email id"
+                            v-model="email" />
+                        <ErrorMessage msg="Invalid email" v-if="!isvalidEmail" />
+                        <ErrorMessage msg="Email Is reqired" v-if="!this.email && fromSubmited" />
                     </div>
 
 
@@ -152,9 +165,8 @@ export default {
 
                         <label for="">Password</label>
                         <div class="search-wrraper w-100 border-Grey_20" :class="getInputError(password)">
-                            <!-- <input class="w-100" :type="typePassword ? 'password' : 'text'" v-model="password"> -->
                             <Field name="password" class="w-100" :type="typePassword ? 'password' : 'text'"
-                                placeholder="Password" />
+                                placeholder="Password" v-model="password" />
                             <div class="icon togglePassword">
                                 <span v-if="typePassword" @click="typePassword = false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -194,14 +206,13 @@ export default {
                                 </span>
                             </div>
                         </div>
-                        <ErrorMessage name="password" class="text-red-600 block mt-2" />
-                        <!-- <ErrorMessage msg="Password Is reqired" v-if="!email && fromSubmited" /> -->
+                        <ErrorMessage msg="Password Is reqired" v-if="!email && fromSubmited" />
 
                     </div>
 
                     <div class="space-y-8px">
 
-                        <button type="submit" class="btn-regular btn-w-full">Log In</button>
+                        <button type="submit" class="btn-regular btn-w-full" :disabled="loginBtn">Log In</button>
 
                         <div class="text-right">
                             <p class="color-Grey_50 text-base_regular">I have <a href="#" class="color_violet">forget
@@ -211,7 +222,7 @@ export default {
 
                     </div>
 
-                </form>
+                </Form>
 
             </div>
 
@@ -223,3 +234,36 @@ export default {
 
     <OverLaye v-if="overlay" />
 </template>
+
+<style scoped>
+.auth-page_center .auth-title {
+    padding: 0;
+}
+
+.auth-page_center .auth-container {
+    display: block;
+}
+
+.auth-page_center .auth-from-section {
+    height: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-page_center .auth-from-section .from {
+    margin: 0 auto;
+}
+
+.auth-page_center .logo {
+    height: auto;
+    margin: 0 auto;
+    width: 240px;
+    display: block;
+}
+
+
+.auth-page_center .logo_mobile {
+    display: none;
+}
+</style>
