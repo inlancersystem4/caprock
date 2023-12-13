@@ -39,7 +39,8 @@ export default {
     methods: {
         validateEmail() {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(this.email);
+            this.isvalidEmail = emailRegex.test(this.email);
+            return this.isvalidEmail;
         },
         async onSubmit(values) {
 
@@ -156,7 +157,7 @@ export default {
                         <label for="">Email</label>
                         <Field name="email" :rules="validateEmail" class="input-1" type="email" placeholder="Enter Email id"
                             v-model="email" />
-                        <ErrorMessage msg="Invalid email" v-if="!isvalidEmail" />
+                        <ErrorMessage msg="Invalid email" v-if="!isvalidEmail && fromSubmited" />
                         <ErrorMessage msg="Email Is reqired" v-if="!this.email && fromSubmited" />
                     </div>
 

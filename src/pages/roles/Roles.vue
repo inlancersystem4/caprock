@@ -16,7 +16,7 @@ export default {
     data() {
         return {
             roleList: [],
-            moduleList: [],
+            // moduleList: [],
             permissionList: [],
             deleteItemModal: false,
             itemId: "",
@@ -24,7 +24,8 @@ export default {
     },
     created() {
         this.featchRoleList();
-        this.featchModuleList();
+        // this.featchModuleList();
+        this.featchPermissionList();
     },
     methods: {
         addRole() {
@@ -43,32 +44,29 @@ export default {
                 console.log(error);
             }
         },
-        async featchModuleList() {
+        // async featchModuleList() {
+        //     var role_data = new FormData();
+
+        //     try {
+        //         const response = await fetchWrapper.post(`${baseUrl}/module-list`, role_data);
+        //         this.moduleList = response.data;
+
+
+        //         const moduleNames = this.moduleList.map(module => module.module_name);
+
+        //         await this.featchPermissionList(moduleNames);
+
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // },
+        async featchPermissionList() {
             var role_data = new FormData();
-
-            try {
-                const response = await fetchWrapper.post(`${baseUrl}/module-list`, role_data);
-                this.moduleList = response.data;
-
-
-                const moduleNames = this.moduleList.map(module => module.module_name);
-
-                await this.featchPermissionList(moduleNames);
-
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        async featchPermissionList(moduleNames) {
-            var role_data = new FormData();
-
-            const moduleNamesString = moduleNames.join(',');
-
-            role_data.append("module_name", moduleNamesString);
 
             try {
                 const response = await fetchWrapper.post(`${baseUrl}/permission-list`, role_data);
                 this.permissionList = response.data;
+
 
             } catch (error) {
                 console.log(error);
@@ -139,8 +137,8 @@ export default {
 
                 <ul class="space-y-8px">
 
-                    <RoleBox @edit_status="statusUpdate" :roleList="roleList" :moduleList="moduleList"
-                        :permissionList="permissionList" @delete_item="getItemId" @edit_item="editRole" />
+                    <RoleBox @edit_status="statusUpdate" :roleList="roleList" :permissionList="permissionList"
+                        @delete_item="getItemId" @edit_item="editRole" />
 
                 </ul>
 

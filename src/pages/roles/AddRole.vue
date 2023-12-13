@@ -4,7 +4,6 @@ import ContentSection from '../../subcomponents/ContentSection2.vue';
 import Label from '../../subcomponents/common/Label.vue';
 import Input from '../../subcomponents/common/Input.vue';
 import ErrorMessage from '../../subcomponents/common/ErrorMessage.vue';
-import MultiSelect from '../../subcomponents/common/MultiSelect.vue';
 
 import { useAuthStore, useAlertStore } from '../../stores'
 import { fetchWrapper } from '../../helpers/fetch-wrapper'
@@ -12,47 +11,27 @@ import { fetchWrapper } from '../../helpers/fetch-wrapper'
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
-    components: { Layout, ContentSection, Label, Input, ErrorMessage, MultiSelect },
+    components: { Layout, ContentSection, Label, Input, ErrorMessage },
     computed: {
         btnDisabled() {
-            return !this.roleName.trim() || !this.selectedModuleName
-        },
-        filteredPermissions() {
-            return (moduleId) => {
-                return this.permissionsList.filter(list => list.module === moduleId);
-            };
+            return !this.roleName.trim()
         },
     },
     data() {
         return {
             formSubmitted: false,
             roleName: "",
-            selectedModule: "",
-            selectedModuleName: "",
-            joinedPermissions: "",
-            moduleList: [],
             permissionsList: [],
+            checked: "",
             checkedPermissions: [],
         }
     },
     created() {
-        this.featchModuleList();
+        this.featchPermissionsList();
     },
     methods: {
-        async featchModuleList() {
-            var role_data = new FormData();
-
-            try {
-                const response = await fetchWrapper.post(`${baseUrl}/module-list`, role_data);
-                this.moduleList = response.data;
-
-            } catch (error) {
-                console.log(error);
-            }
-        },
         async featchPermissionsList() {
             var role_data = new FormData();
-            role_data.append("module_name", this.selectedModuleName)
 
             try {
                 const response = await fetchWrapper.post(`${baseUrl}/permission-list`, role_data);
@@ -62,32 +41,25 @@ export default {
                 console.log(error);
             }
         },
-        selectedMulti(data) {
-            this.selectedModule = data.map(item => item.module_id).join(',');
-            this.selectedModuleName = data.map(item => item.module_name).join(',');
-            this.featchPermissionsList();
-        },
-        isChecked(permissionId) {
-            return this.checkedPermissions.includes(permissionId)
-        },
-        updatePermission(permissionId, checked) {
-            if (checked) {
-                this.checkedPermissions.push(permissionId);
+
+        updateCheckedPermissions(permissionId) {
+            const index = this.checkedPermissions.indexOf(permissionId);
+            if (index !== -1) {
+                this.checkedPermissions.splice(index, 1);
             } else {
-                const index = this.checkedPermissions.indexOf(permissionId);
-                if (index !== -1) {
-                    this.checkedPermissions.splice(index, 1);
-                }
+                this.checkedPermissions.push(permissionId);
             }
         },
+
         async addRole() {
-            this.joinedPermissions = Object.values(this.checkedPermissions);
+
+            const joinedPermissions = this.checkedPermissions.join(',');
+
 
             var role_data = new FormData();
             role_data.append("role_id", "");
             role_data.append("role_name", this.roleName);
-            role_data.append("role_module", this.selectedModule);
-            role_data.append("role_permission", this.joinedPermissions.join(','));
+            role_data.append("role_permission", joinedPermissions);
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/role-add-or-edit`, role_data);
@@ -122,51 +94,52 @@ export default {
                         <ErrorMessage msg="" v-if="!roleName && formSubmitted" />
                     </div>
 
-                    <div></div>
 
-                    <div class="space-y-8px">
-                        <Label label="Select Module" />
-                        <MultiSelect :options="moduleList" @option-selected="selectedMulti" />
-                    </div>
 
-                    <div></div>
-
-                    <div class="space-y-8px col-span-2" v-if="selectedModuleName">
+                    <div class="space-y-8px col-span-2">
                         <Label label="Add Permissions" />
 
-                        <div class="display-flex align-center gap-24px margin-top_12px" v-for="(item, index) in moduleList"
-                            :key="index">
+                        <div v-for="(permissionData, permissionIndex) in permissionsList" :key="permissionIndex">
 
-                            <ul class=" display-flex  align-center gap-24px">
+                            <div class="margin-top_16px display-flex align-center gap-20px">
 
-                                <p class=" text-base_semibold text-capitalize w_160px"> {{ item.module_name }} Permissions:-
-                                </p>
+                                <p class="text-small_semibold color-Grey_50 text-capitalize w_140px">
+                                    {{ permissionData.name }}
+                                    permission:-</p>
 
-                                <div v-for="(list, Permissionsindex) in filteredPermissions(item.module_id)"
-                                    :key="Permissionsindex">
-                                    <div class="custom-toogle-btn display-flex align-center gap-8px">
-                                        <input type="checkbox" class="form-toogle-btn"
-                                            :id="'checkbox_' + item.module_id + '_' + list.permission_id"
-                                            :checked="isChecked(list.permission_id)"
-                                            @change="updatePermission(list.permission_id, $event.target.checked)">
-                                        <label
-                                            class="text-capitalize text-large_semibold color-Grey_90 cursor-pointer img-not-selected"
-                                            :for="'checkbox_' + item.module_id + '_' + list.permission_id">
-                                            {{ list.permission_name }}
-                                        </label>
+
+                                <template v-for="(permissionlist, permissionlistIndex) in permissionData.permissions"
+                                    :key="permissionlistIndex">
+
+                                    <div class="img-not-selected ">
+                                        <div class="custom-toogle-btn display-flex align-center gap-8px ">
+
+                                            <input type="checkbox" class="form-toogle-btn"
+                                                @change="updateCheckedPermissions(permissionlist.permission_id)"
+                                                :id="permissionIndex + '_' + permissionlistIndex" />
+                                            {{ checked }}
+                                            <label class="text-capitalize text-large_semibold color-Grey_90"
+                                                :for="permissionIndex + '_' + permissionlistIndex">
+                                                {{ permissionlist.permission_name }}
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
 
-                            </ul>
+                                </template>
+
+                            </div>
 
                         </div>
+
+
 
                     </div>
 
                 </div>
 
                 <button type="submit" class="btn-regular margin-top_24px" :disabled="btnDisabled" @click="addRole">Add
-                    User</button>
+                    User
+                </button>
 
             </div>
 

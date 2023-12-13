@@ -3,19 +3,7 @@
 export default {
     props: {
         roleList: Array,
-        moduleList: Array,
         permissionList: Array,
-    },
-    computed: {
-        checkedPermissions() {
-            const rolePermissions = this.item.role_permission.split(',').map(Number);
-            return this.permissions.map(permission => {
-                return {
-                    ...permission,
-                    checked: rolePermissions.includes(permission.permission_id)
-                };
-            });
-        }
     },
     methods: {
         deleteItem(id) {
@@ -26,7 +14,12 @@ export default {
         },
         editStatus(id) {
             this.$emit('edit_status', id)
-        }
+        },
+        checkPermission(rolePermissions, permissionId) {
+            if (!rolePermissions) return false;
+            const permissionsArray = rolePermissions.split(',');
+            return permissionsArray.includes(permissionId.toString());
+        },
     },
 }
 </script>
@@ -41,6 +34,7 @@ export default {
                 <div class="display-flex align-center gap-8px Mobile-fit_justify-between Mobile-fit_w-100">
                     <h2 class="text-xl_semibold color-Grey_90 text-capitalize">{{ item.role_name }}</h2>
                 </div>
+
                 <div class="display-flex align-center gap-8px Mobile-fit_justify-between Mobile-fit_w-100">
 
                     <button class="btn-regular custom-dropdown display-flex align-center gap-8px"
@@ -96,48 +90,43 @@ export default {
         </div>
 
 
-
         <div class="padding-y_24px  padding-x_32px Sm_padding-x_28px Mobile_padding-x_24px border-t border-solid border-Grey_20"
-            v-if="item.role_module === null || item.role_module === 'null'">
+            v-if="permissionList === null || permissionList === 'null' || !permissionList || permissionList.length === 0">
             <p class="no-conetnt-show-section">No Any Module</p>
         </div>
 
-        <div v-for="(moduleData, moduleIndex ) in moduleList" :key="moduleIndex">
 
-            <div class="padding-y_18px padding-x_32px Sm_padding-x_28px Mobile_padding-x_24px border-t border-solid border-Grey_20 display-flex align-center gap-18px"
-                v-if="item.role_module.includes(moduleData.module_name)">
+        <div v-for="(permissionData, permissionIndex ) in permissionList" :key="permissionIndex">
 
-                <p class="text-small_semibold color-Grey_50 text-capitalize w_140px">{{ moduleData.module_name }}
+            <div
+                class="padding-y_18px padding-x_32px Sm_padding-x_28px Mobile_padding-x_24px border-t border-solid border-Grey_20 display-flex align-center gap-18px">
+
+                <p class="text-small_semibold color-Grey_50 text-capitalize w_140px">{{ permissionData.name }}
                     permission:-</p>
 
-                <div class=" display-flex align-center justify-start gap-24px">
 
+                <template v-for="(permissionlist, permissionlistIndex) in permissionData.permissions"
+                    :key="permissionlistIndex">
 
-                    <template v-for="(permissionData, permissionIndex) in permissionList">
+                    <div class="img-not-selected cursor-no-drop">
+                        <div class="custom-toogle-btn display-flex align-center gap-8px ">
 
-                        <div v-if="moduleData.module_id === permissionData.module" :key="permissionIndex">
-                            <div class="custom-toogle-btn display-flex align-center gap-8px  cursor-no-drop">
+                            <input type="checkbox" class="form-toogle-btn cursor-no-drop"
+                                :checked="checkPermission(item.role_permission, permissionlist.permission_id)"
+                                :id="item.role_id + '_' + permissionIndex + '_' + permissionlistIndex" disabled />
 
-                                <input type="checkbox" class="form-toogle-btn cursor-no-drop" :id="permissionIndex"
-                                    :checked="item.role_permission.includes(permissionData.permission_id)" disabled>
-
-                                <label
-                                    class="text-capitalize text-large_semibold color-Grey_90 cursor-no-drop img-not-selected"
-                                    :for="permissionIndex">
-                                    {{ permissionData.permission_name }}
-                                </label>
-                            </div>
+                            <label class="text-capitalize text-large_semibold color-Grey_90 cursor-no-drop"
+                                :id="item.role_id + '_' + permissionIndex + '_' + permissionlistIndex">
+                                {{ permissionlist.permission_name }}
+                            </label>
                         </div>
+                    </div>
 
-                    </template>
-
-
-                </div>
+                </template>
 
             </div>
 
         </div>
-
 
     </li>
 </template>

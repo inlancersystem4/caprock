@@ -50,13 +50,14 @@ export default {
             this.selectDropdownOpen = false;
             this.$emit('option-selected', this.selectedOptions);
         },
-        clearResSelection(index, data) {
+        clearResSelection(id, index, data) {
+            this.responseData.splice(id, 1);
             this.responseData.splice(index, 1);
             this.selectDropdownOpen = false;
             // this.$emit('option-selected', this.selectedOptions, data);
-            this.$emit('selected-option_Del', data, this.selectedOptions);
-            console.log("data", data)
-            console.log("selectedOptions", this.selectedOptions)
+            this.$emit('selected-option_Del', data, id);
+            // console.log("data", data)
+            // console.log("selectedOptions", this.selectedOptions)
         },
         isSelected(option) {
 
@@ -87,7 +88,7 @@ export default {
             <div v-for="(selectOp, index) in responseData" :key="index"
                 class="rounded-regualr bg-Grey_20 padding-y_2px padding-left_12px padding-right_8px display-flex align-center gap-4px">
                 <p class="color-Grey_60 text-base_medium text-capitalize">{{ selectOp.module_name }}</p>
-                <button class="icon-btn icon-btn_24px" @click="clearResSelection(index, selectOp)">
+                <button class="icon-btn icon-btn_24px" @click="clearResSelection(selectOp.module_id, selectOp, index)">
                     <img src="../../assets/img/icons/close-icon2.svg">
                 </button>
             </div>
@@ -96,9 +97,7 @@ export default {
         <div class="display-flex align-center gap-8px w-fit">
             <div v-for="(selectedOption, index) in selectedOptions" :key="index"
                 class="rounded-regualr bg-Grey_20 padding-y_2px padding-left_12px padding-right_8px display-flex align-center gap-4px">
-                <p class="color-Grey_60 text-base_medium text-capitalize" v-if="!responseData">{{ selectedOption.module_name
-                }}</p>
-                <p class="color-Grey_60 text-base_medium text-capitalize" v-if="responseData">{{ selectedOption.module_name
+                <p class="color-Grey_60 text-base_medium text-capitalize">{{ selectedOption.module_name
                 }}</p>
                 <button class="icon-btn icon-btn_24px" @click="clearSelection(index)">
                     <img src="../../assets/img/icons/close-icon2.svg">
