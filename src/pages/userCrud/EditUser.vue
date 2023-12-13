@@ -2,9 +2,10 @@
 import Layout from '../../components/Layout.vue';
 import UserInfo from './component/UserInfo.vue';
 import UserPassword from './component/UserPassword.vue';
+import UserPermissions from './component/UserPermissions.vue';
 
 export default {
-    components: { Layout, UserInfo, UserPassword },
+    components: { Layout, UserInfo, UserPassword, UserPermissions },
     data() {
         return {
             userId: "",
@@ -50,7 +51,7 @@ export default {
 
         <div v-show="activeTab === 2">
 
-            Role & Permissions
+            <UserPermissions />
 
         </div>
 

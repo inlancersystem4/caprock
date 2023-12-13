@@ -82,7 +82,6 @@ const router = createRouter({
   ]
 })
 
-
 router.beforeEach(async (to) => {
   const alertStore = useAlertStore();
   alertStore.clear();

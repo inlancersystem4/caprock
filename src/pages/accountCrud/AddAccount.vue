@@ -62,7 +62,7 @@ export default {
     <Layout>
 
 
-        <ContentSection title="Add User">
+        <ContentSection title="Add Account">
 
             <div class="row">
 

@@ -8,7 +8,6 @@ export default {
             required: true,
         },
         responseData: Object,
-        value: String
     },
 
     data() {
@@ -17,12 +16,6 @@ export default {
             selectedOption: null,
             selectedOptionVal: null,
             responseOption: "",
-            inputValue: this.value || ''
-        }
-    },
-    watch: {
-        value(newValue) {
-            this.inputValue = newValue;
         }
     },
     methods: {
@@ -30,7 +23,7 @@ export default {
             this.selectDropdownOpen = !this.selectDropdownOpen;
         },
         selectOption(option) {
-            this.selectedOption = option.t_name || option.l_name || option.s_name || option.v_name || option.user_name || option.v_image;
+            this.selectedOption = option.role_name;
             this.selectedOptionVal = option;
             this.selectDropdownOpen = false;
             this.$emit('option-selected', this.selectedOptionVal);
@@ -39,9 +32,6 @@ export default {
             this.selectedOption = null;
             this.selectDropdownOpen = false;
         },
-        clearInput() {
-            this.inputValue = ""
-        }
     },
 }
 
@@ -56,13 +46,14 @@ export default {
 
         <div @click="toggleDropdown" class="cursor-pointer">
 
-            <p v-if="!responseData" class="w-100 capitalize color-Grey_90 font-medium"
+            <p v-if="!responseData" class="w-100 text-capitalize  color-Grey_90 font-medium"
                 :class="{ 'color-Grey_50': selectedOption !== null }">
                 {{ selectedOption ? selectedOption : 'Select Option' }}
             </p>
 
-            <p v-if="responseData" class="w-100 capitalize color-Grey_90 font-medium">
-                {{ responseData }}
+            <p v-if="responseData" class="w-100 text-capitalize  color-Grey_90 font-medium">
+                <!-- {{ responseData }} -->
+                {{ responseData ? responseData : 'Select Option' }}
             </p>
 
         </div>
@@ -70,7 +61,7 @@ export default {
 
         <div class="select-icon cursor-pointer">
             <div @click="clearSelection" v-if="selectedOption">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
                         stroke="#191C1F" stroke-width="1.5" stroke-miterlimit="10" />
@@ -89,18 +80,6 @@ export default {
         </div>
         <div v-if="selectDropdownOpen" class="select-option">
 
-            <div class="padding-x_24px padding-y_12px">
-                <div class="search-wrraper w-100">
-                    <button class="icon">
-                        <img src="../assets/img/icons/search.svg" class="img-not-selected">
-                    </button>
-                    <input type="text" class=" w-100" placeholder="Search Something" v-model="inputValue">
-                    <button class="icon val_clear" style="cursor: pointer;" v-if="inputValue" @click="clearInput">
-                        <img src="../assets/img/icons/close-icon.svg" class="img-not-selected">
-                    </button>
-                </div>
-            </div>
-
             <ul class="w-100">
 
                 <p class="no-conetnt-show-section" v-if="!options">
@@ -108,24 +87,7 @@ export default {
                 </p>
 
                 <li v-for="(option, index) in options" :key="index" @click="selectOption(option)" class="capitalize">
-                    <div v-if="option.t_name">
-                        {{ option.t_name }}
-                    </div>
-                    <div v-if="option.l_name">
-                        {{ option.l_name }}
-                    </div>
-                    <div v-if="option.s_name">
-                        {{ option.s_name }}
-                    </div>
-                    <div v-if="option.user_name">
-                        {{ option.user_name }}
-                    </div>
-                    <div class="display-flex gap-12px align-center" v-if="option.v_name">
-                        <img :src="option.v_image" width="42" height="42" class="object-contain">
-                        <div>
-                            {{ option.v_name }}
-                        </div>
-                    </div>
+                    {{ option.role_name }}
                 </li>
             </ul>
         </div>

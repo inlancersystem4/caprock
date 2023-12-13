@@ -26,6 +26,7 @@ export default {
             profileOldPass: "",
             typePassword: true,
             typePassword2: true,
+            typePassword3:true,
             passwordNotMatch: false,
             profilePass: "",
             profileCoPass: "",

@@ -9,12 +9,13 @@ import Layout from '../../../components/Layout.vue';
 import ContentSection from '../../../subcomponents/ContentSection2.vue';
 import Label from '../../../subcomponents/common/Label.vue';
 import Input from '../../../subcomponents/common/Input.vue';
+import Select from '../../../subcomponents/common/Select.vue';
 import ErrorMessage from '../../../subcomponents/common/ErrorMessage.vue';
 
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
 export default {
-    components: { Layout, ContentSection, Label, Input, ErrorMessage },
+    components: { Layout, ContentSection, Label, Input, ErrorMessage, Select },
     data() {
         return {
             userName: "",
@@ -30,11 +31,15 @@ export default {
             typePassword: true,
             typePassword2: true,
             passwordNotMatch: false,
+            roleList: [],
+            selectedRole: "",
+            selectedRoleId: "",
         }
     },
     created() {
         this.userId = this.$route.params.id;
         this.UserData();
+        this.featchRoleList();
     },
     computed: {
         btnDisabled() {
@@ -58,6 +63,19 @@ export default {
             }
 
         },
+        async featchRoleList() {
+            var role_data = new FormData();
+            role_data.append("role_id", "");
+
+            try {
+                const response = await fetchWrapper.post(`${baseUrl}/role-list`, role_data);
+                this.roleList = response.data;
+
+
+            } catch (error) {
+                console.log(error);
+            }
+        },
         async UserData() {
             var user_data = new FormData();
             user_data.append("user_id", this.userId);
@@ -69,11 +87,16 @@ export default {
                 this.userNumber = response.data.user_phone_number
                 this.userEmail = response.data.user_email
                 this.profilePic = response.data.user_profile_pic
+                this.selectedRole = response.data.user_role
 
 
             } catch (error) {
                 console.log(error);
             }
+        },
+        onOptionSelected(data) {
+            this.selectedRole = data.role_name
+            this.selectedRoleId = data.role_id
         },
         async EditUser() {
             var user_data = new FormData();
@@ -82,6 +105,7 @@ export default {
             user_data.append("user_email", this.userEmail);
             user_data.append("user_phone_number", this.userNumber);
             user_data.append("user_profile_pic", this.profilePic);
+            user_data.append("user_role", this.selectedRoleId);
 
             try {
                 const data = await fetchWrapper.post(`${baseUrl}/add-or-edit-user`, user_data);
@@ -134,6 +158,13 @@ export default {
                         <ErrorMessage msg="" v-if="!userNumber && formSubmitted" />
                         <ErrorMessage msg="Only 10 number valid" v-if="userNumber.length > 10" />
                     </div>
+
+                    <div class="space-y-8px">
+                        <Label label="Select  Role" />
+                        <Select :options="roleList" :responseData="selectedRole" @option-selected="onOptionSelected" />
+                    </div>
+
+                    <div></div>
 
                     <button type="submit" class="btn-regular margin-top_8px" :disabled="btnDisabled"
                         @click="EditUser()">Edit User</button>

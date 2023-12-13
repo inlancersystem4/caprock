@@ -1,6 +1,72 @@
 <script>
-export default {
+import { useAuthStore, useAlertStore } from '../../../stores'
+import { fetchWrapper } from '../../../helpers/fetch-wrapper'
 
+import ErrorMessage from '../../../subcomponents/common/ErrorMessage.vue';
+
+
+const baseUrl = `${import.meta.env.VITE_API_URL}`;
+
+
+export default {
+    components: { ErrorMessage },
+    data() {
+        return {
+            typePassword: true,
+            typePassword2: true,
+            typePassword3: true,
+            passwordNotMatch: false,
+            profilePass: "",
+            profileCoPass: "",
+            passwordError: "",
+            passwordErrorShow: false,
+            userId: "",
+        }
+    },
+    created() {
+        this.userId = this.$route.params.id;
+    },
+    computed: {
+        passwordBtnDis() {
+            return this.passwordNotMatch;
+        }
+    },
+    methods: {
+        checkPasswords() {
+            if (this.profilePass && this.profileCoPass && this.profilePass === this.profileCoPass) {
+
+                this.passwordNotMatch = false
+
+            } else {
+
+                this.passwordNotMatch = true
+
+            }
+        },
+        async passwordUpdate() {
+            var profile = new FormData();
+            profile.append("user_id", this.userId)
+            profile.append("old_password", this.profileOldPass)
+            profile.append("new_password", this.profilePass)
+            profile.append("confirm_password", this.profileCoPass)
+
+            try {
+                const data = await fetchWrapper.post(`${baseUrl}/user-change-password`, profile);
+
+                if (data.success === 1) {
+                    this.$router.push({ name: 'UserList' })
+                }
+                if (data.success === 0) {
+                    this.passwordErrorShow = true
+                    this.passwordError = data.message
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        },
+    }
 }
 </script>
 
@@ -173,8 +239,7 @@ export default {
 
             <div class="w-100 display-flex align-center justify-end gap-12px">
 
-                <button class="btn-regular btn-danger"
-                    @click="this.chnagePassword = !this.chnagePassword, this.profileDetails = !this.profileDetails">Cancel</button>
+
                 <button class="btn-regular" :disabled="passwordBtnDis" @click="passwordUpdate">Save</button>
 
             </div>
