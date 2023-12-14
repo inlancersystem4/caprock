@@ -29,7 +29,6 @@ export default {
     },
     created() {
         this.accountData();
-        this.aa();
     },
     methods: {
 
@@ -63,19 +62,6 @@ export default {
                 const response = await fetchWrapper.post(`${baseUrl}/account-list`, account_data);
                 this.list = response.data;
                 this.totalPages = response.total_pages;
-
-            } catch (error) {
-                console.log(error);
-            }
-
-        },
-
-        async aa() {
-            var account_data = new FormData();
-            try {
-                const response = await axios.get(`${baseUrl}/empl`, account_data);
-
-                console.log(response.data)
 
             } catch (error) {
                 console.log(error);
