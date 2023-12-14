@@ -6,7 +6,7 @@ export default {
             return this.$route.matched.some(route => route.path === '/');
         },
         isAccountCrudActive() {
-            return this.$route.matched.some(route => route.path === '/accounts' || route.path === '/add-account' || route.name === 'EditAccount');
+            return this.$route.matched.some(route => route.path === '/accounts' || route.path === '/add-account' || route.name === 'EditAccount' || route.name === 'AccountDetails');
         },
         isUserCrudActive() {
             return this.$route.matched.some(route => route.path === '/userlist' || route.path === '/add-user' || route.name === 'EditUser' || route.path === '/roles' || route.path === '/add-role' || route.name === 'EditRole');
@@ -55,7 +55,7 @@ export default {
             this.mainSidebarActive = !this.mainSidebarActive;
             this.miniSidebarActive = !this.miniSidebarActive;
         },
-        closeResponsiveMenu(){
+        closeResponsiveMenu() {
             this.$emit('closeResponsiveMenu')
         }
     }

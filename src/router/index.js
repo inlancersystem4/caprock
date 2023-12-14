@@ -66,6 +66,11 @@ const router = createRouter({
       component: () => import('../pages/Settings.vue')
     },
     {
+      path: '/account-detail',
+      name: 'AccountDetails',
+      component: () => import('../pages/accountDetails/AccountDetails.vue')
+    },
+    {
       path: '/log-in',
       name: 'Login',
       component: () => import('../auth/Login.vue')
