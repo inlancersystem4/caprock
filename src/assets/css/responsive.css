@@ -217,9 +217,9 @@
         margin-left: 0;
         left: 0;
         border-radius: 16px;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-        max-height: 450px;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        max-height: 520px;
         overflow-y: auto;
         -webkit-border-radius: 16px;
         -moz-border-radius: 16px;
@@ -243,6 +243,7 @@
 
     .table-header {
         padding: 0 22px 16px;
+        gap: 12px;
     }
 
     .table-footer {
@@ -255,10 +256,11 @@
 
 
     .table-header .table-options {
-        flex-wrap: wrap;
+        flex-wrap: wrap-reverse;
         justify-content: flex-end;
         column-gap: 20px;
         row-gap: 8px;
+        width: 100%;
     }
 
     .table-about-tag {

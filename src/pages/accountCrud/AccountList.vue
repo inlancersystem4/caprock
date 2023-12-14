@@ -2,6 +2,8 @@
 
 import { useAuthStore, useAlertStore } from '../../stores'
 import { fetchWrapper } from '../../helpers/fetch-wrapper'
+import axios from 'axios';
+
 
 import Layout from '../../components/Layout.vue';
 import ContentSection from '../../subcomponents/ContentSection.vue';
@@ -27,6 +29,7 @@ export default {
     },
     created() {
         this.accountData();
+        this.aa();
     },
     methods: {
 
@@ -60,6 +63,19 @@ export default {
                 const response = await fetchWrapper.post(`${baseUrl}/account-list`, account_data);
                 this.list = response.data;
                 this.totalPages = response.total_pages;
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        },
+
+        async aa() {
+            var account_data = new FormData();
+            try {
+                const response = await axios.get(`${baseUrl}/empl`, account_data);
+
+                console.log(response.data)
 
             } catch (error) {
                 console.log(error);
@@ -259,5 +275,44 @@ tr {
     max-width: 5%;
     display: flex;
     justify-content: end;
+}
+
+
+@media (max-width:999px) {
+
+    .count {
+        min-width: 50px;
+        max-width: 50px;
+    }
+
+    .account_name {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .account_balance {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .account_color {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .blank {
+        min-width: 50px;
+        max-width: 50px;
+    }
+
+    .user-status {
+        min-width: 100px;
+        max-width: 100px;
+    }
+
+    .dropdown {
+        min-width: 50px;
+        max-width: 50px;
+    }
 }
 </style>

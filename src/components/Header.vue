@@ -40,6 +40,9 @@ export default {
             const aa = useAuthStore();
             aa.logout();
         },
+        responsiveMenu() {
+            this.$emit('responsiveMenu')
+        }
     },
 }
 </script>
@@ -48,9 +51,6 @@ export default {
     <header class="main-content-header">
 
         <div class="header-btn-group">
-            <!-- <button class="layout-buttons" id="Close_mini_sidebar" v-show="openMainSidebar" @click="emitSidebarEvent">
-                <img src="../assets/img/icons/close-icon.svg" class="img-not-selected">
-            </button> -->
             <button class="layout-buttons" @click="goToPreviousPage">
                 <img src="../assets/img/icons/arrow-left.svg" class="img-not-selected">
             </button>
@@ -103,6 +103,9 @@ export default {
                     </li>
                 </ul>
             </div>
+            <button class="layout-buttons" @click="responsiveMenu" id="Responsive_Open_sidebar">
+                <img src="../assets/img/icons/burger-menu.svg" class="img-not-selected">
+            </button>
         </div>
 
 

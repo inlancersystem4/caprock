@@ -139,4 +139,42 @@ tr:nth-last-child(3) .custom-dropdown-list {
 .custom-dropdown:hover .custom-dropdown-list {
     display: block;
 }
+
+@media (max-width:999px) {
+
+    .count {
+        min-width: 50px;
+        max-width: 50px;
+    }
+
+    .account_name {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .account_balance {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .account_color {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .blank {
+        min-width: 50px;
+        max-width: 50px;
+    }
+
+    .user-status {
+        min-width: 100px;
+        max-width: 100px;
+    }
+
+    .dropdown {
+        min-width: 50px;
+        max-width: 50px;
+    }
+}
 </style>

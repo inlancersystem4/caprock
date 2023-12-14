@@ -26,7 +26,7 @@ export default {
             profileOldPass: "",
             typePassword: true,
             typePassword2: true,
-            typePassword3:true,
+            typePassword3: true,
             passwordNotMatch: false,
             profilePass: "",
             profileCoPass: "",
@@ -175,7 +175,7 @@ export default {
 
             </div>
 
-            <div class=" display-flex align-start w-100  gap-32px padding-top_14px padding-x_12px">
+            <div class=" display-flex align-start w-100  gap-32px padding-top_14px padding-x_12px Md_flex-column">
 
                 <div class="profile_pic">
                     <img :src="profileData.profile_pic">
@@ -593,5 +593,11 @@ export default {
 .search-wrraper span svg {
     width: 20px;
     height: 20px;
+}
+
+@media (max-width:768px) {
+    .profile-details {
+        padding-left: 0;
+    }
 }
 </style>

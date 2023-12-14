@@ -96,14 +96,14 @@ tr:nth-last-child(3) .custom-dropdown-list {
 }
 
 .count {
-    min-width: 40px;
-    max-width: 40px;
+    min-width: 3%;
+    max-width: 3%;
     display: block;
 }
 
 .user_name {
-    min-width: 210px;
-    max-width: 210px;
+    min-width: 20%;
+    max-width: 20%;
     display: block;
 }
 
@@ -114,38 +114,78 @@ tr:nth-last-child(3) .custom-dropdown-list {
 }
 
 .user_email {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 18%;
+    max-width: 18%;
     display: block;
 }
 
 .user_number {
-    min-width: 200px;
-    max-width: 200px;
+    min-width: 18%;
+    max-width: 18%;
     display: block;
 }
 
 .blank {
-    min-width: 180px;
-    max-width: 180px;
+    min-width: 15%;
+    max-width: 15%;
     display: block;
 }
 
 .user-status {
-    min-width: 100px;
-    max-width: 100px;
+    min-width: 10%;
+    max-width: 10%;
     display: flex;
     justify-content: end;
 }
 
 .dropdown {
-    min-width: 50px;
-    max-width: 50px;
+    min-width: 5%;
+    max-width: 5%;
     display: flex;
     justify-content: end;
 }
 
 .custom-dropdown:hover .custom-dropdown-list {
     display: block;
+}
+
+@media (max-width:990px) {
+
+    .count {
+        min-width: 50px;
+        max-width: 50px;
+    }
+
+    .user_name {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+
+    .user_email {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    .user_number {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .blank {
+        min-width: 50px;
+        max-width: 50px;
+    }
+
+    .user-status {
+        min-width: 100px;
+        max-width: 100px;
+    }
+
+    .dropdown {
+        min-width: 50px;
+        max-width: 50px;
+    }
+
 }
 </style>

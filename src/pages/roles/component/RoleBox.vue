@@ -99,30 +99,34 @@ export default {
         <div v-for="(permissionData, permissionIndex ) in permissionList" :key="permissionIndex">
 
             <div
-                class="padding-y_18px padding-x_32px Sm_padding-x_28px Mobile_padding-x_24px border-t border-solid border-Grey_20 display-flex align-center gap-18px">
+                class="padding-y_18px padding-x_32px Sm_padding-x_28px Mobile_padding-x_24px border-t border-solid border-Grey_20 display-flex align-center gap-18px  Lg_flex-wrap">
 
                 <p class="text-small_semibold color-Grey_50 text-capitalize w_140px">{{ permissionData.name }}
                     permission:-</p>
 
+                <div
+                    class=" display-flex align-center gap-18px justify-between  Md_w-100  Mobile_grid-cols-2 Mobile_display-grid">
 
-                <template v-for="(permissionlist, permissionlistIndex) in permissionData.permissions"
-                    :key="permissionlistIndex">
+                    <template v-for="(permissionlist, permissionlistIndex) in permissionData.permissions"
+                        :key="permissionlistIndex">
 
-                    <div class="img-not-selected cursor-no-drop">
-                        <div class="custom-toogle-btn display-flex align-center gap-8px ">
+                        <div class="img-not-selected cursor-no-drop">
+                            <div class="custom-toogle-btn display-flex align-center gap-8px ">
 
-                            <input type="checkbox" class="form-toogle-btn cursor-no-drop"
-                                :checked="checkPermission(item.role_permission, permissionlist.permission_id)"
-                                :id="item.role_id + '_' + permissionIndex + '_' + permissionlistIndex" disabled />
+                                <input type="checkbox" class="form-toogle-btn cursor-no-drop"
+                                    :checked="checkPermission(item.role_permission, permissionlist.permission_id)"
+                                    :id="item.role_id + '_' + permissionIndex + '_' + permissionlistIndex" disabled />
 
-                            <label class="text-capitalize text-large_semibold color-Grey_90 cursor-no-drop"
-                                :id="item.role_id + '_' + permissionIndex + '_' + permissionlistIndex">
-                                {{ permissionlist.permission_name }}
-                            </label>
+                                <label class="text-capitalize text-large_semibold color-Grey_90 cursor-no-drop"
+                                    :id="item.role_id + '_' + permissionIndex + '_' + permissionlistIndex">
+                                    {{ permissionlist.permission_name }}
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                </template>
+                    </template>
+
+                </div>
 
             </div>
 

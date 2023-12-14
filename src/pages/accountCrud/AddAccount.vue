@@ -199,4 +199,19 @@ export default {
     height: 100%;
     display: none;
 }
+
+@media (max-width:790px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .col-8 {
+        width: 100%;
+    }
+
+    .col-2 {
+        display: none;
+    }
+
+}
 </style>

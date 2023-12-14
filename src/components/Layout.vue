@@ -1,16 +1,20 @@
 <script>
 import Sidebar from './Sidebar.vue';
 import Header from './Header.vue';
+import OverLaye from '../subcomponents/common/OverLaye.vue';
 
 export default {
     components: {
         Sidebar,
         Header,
+        OverLaye,
     },
     data() {
         return {
             miniSidebarActive: false,
             loading: false,
+            responsiveSidebarActive: false,
+            overLaye: false
         }
     },
     created() {
@@ -32,6 +36,18 @@ export default {
             }
 
         },
+        responsiveMenu() {
+            this.responsiveSidebarActive = true
+            this.overLaye = true
+        },
+        closeResponsiveMenu() {
+            this.responsiveSidebarActive = false
+            this.overLaye = false
+        },
+        overLayeClick() {
+            this.responsiveSidebarActive = false
+            this.overLaye = false
+        }
     },
 }
 </script>
@@ -43,9 +59,9 @@ export default {
     </div>
 
     <main class="main-layout">
-        <Sidebar />
+        <Sidebar :responsiveSidebarActive="responsiveSidebarActive" @closeResponsiveMenu="closeResponsiveMenu" />
         <section class="main-content">
-            <Header />
+            <Header @responsiveMenu="responsiveMenu" />
             <section class="main-content-body">
                 <div class="content-section">
                     <slot></slot>
@@ -53,6 +69,8 @@ export default {
             </section>
         </section>
     </main>
+
+    <OverLaye v-if="overLaye" @click="overLayeClick" />
 </template>
 
 <style scoped>

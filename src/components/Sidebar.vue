@@ -18,10 +18,13 @@ export default {
             return this.$route.matched.some(route => route.path === '/settings');
         }
     },
+    props: {
+        responsiveSidebarActive: Boolean
+    },
     data() {
         return {
             mainSidebarActive: true,
-            miniSidebarActive: false
+            miniSidebarActive: false,
         }
     },
     created() {
@@ -51,6 +54,9 @@ export default {
         CloseMenuMini() {
             this.mainSidebarActive = !this.mainSidebarActive;
             this.miniSidebarActive = !this.miniSidebarActive;
+        },
+        closeResponsiveMenu(){
+            this.$emit('closeResponsiveMenu')
         }
     }
 }
@@ -58,7 +64,8 @@ export default {
 </script>
 
 <template>
-    <aside class="main-sidebar" :class="{ 'main-sidebar-deactive': miniSidebarActive === true }">
+    <aside class="main-sidebar"
+        :class="{ 'main-sidebar-deactive': miniSidebarActive === true, 'responsive-main-sidebar': responsiveSidebarActive === true }">
 
         <div class="sidebar-content">
 
@@ -74,7 +81,7 @@ export default {
                     <img src="../assets/img/icons/burger-menu.svg" class="img-not-selected">
                 </div>
 
-                <div class="user-profile-btn" id="Responsive_Close_sidebar">
+                <div class="user-profile-btn" id="Responsive_Close_sidebar" @click="closeResponsiveMenu">
                     <img src="../assets/img/icons/close-icon.svg" class="img-not-selected close-menu">
                 </div>
 

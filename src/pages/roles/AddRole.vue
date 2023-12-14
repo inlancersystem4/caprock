@@ -101,31 +101,36 @@ export default {
 
                         <div v-for="(permissionData, permissionIndex) in permissionsList" :key="permissionIndex">
 
-                            <div class="margin-top_16px display-flex align-center gap-20px">
+                            <div class="margin-top_16px display-flex align-center gap-20px Lg_flex-wrap">
 
                                 <p class="text-small_semibold color-Grey_50 text-capitalize w_140px">
                                     {{ permissionData.name }}
                                     permission:-</p>
 
+                                <div
+                                    class=" display-flex align-center gap-18px justify-between  Md_w-100  Mobile_grid-cols-2 Mobile_display-grid">
 
-                                <template v-for="(permissionlist, permissionlistIndex) in permissionData.permissions"
-                                    :key="permissionlistIndex">
 
-                                    <div class="img-not-selected ">
-                                        <div class="custom-toogle-btn display-flex align-center gap-8px ">
+                                    <template v-for="(permissionlist, permissionlistIndex) in permissionData.permissions"
+                                        :key="permissionlistIndex">
 
-                                            <input type="checkbox" class="form-toogle-btn"
-                                                @change="updateCheckedPermissions(permissionlist.permission_id)"
-                                                :id="permissionIndex + '_' + permissionlistIndex" />
-                                            {{ checked }}
-                                            <label class="text-capitalize text-large_semibold color-Grey_90"
-                                                :for="permissionIndex + '_' + permissionlistIndex">
-                                                {{ permissionlist.permission_name }}
-                                            </label>
+                                        <div class="img-not-selected ">
+                                            <div class="custom-toogle-btn display-flex align-center gap-8px ">
+
+                                                <input type="checkbox" class="form-toogle-btn"
+                                                    @change="updateCheckedPermissions(permissionlist.permission_id)"
+                                                    :id="permissionIndex + '_' + permissionlistIndex" />
+                                                {{ checked }}
+                                                <label class="text-capitalize text-large_semibold color-Grey_90"
+                                                    :for="permissionIndex + '_' + permissionlistIndex">
+                                                    {{ permissionlist.permission_name }}
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </template>
+                                    </template>
+
+                                </div>
 
                             </div>
 
@@ -138,7 +143,7 @@ export default {
                 </div>
 
                 <button type="submit" class="btn-regular margin-top_24px" :disabled="btnDisabled" @click="addRole">Add
-                    User
+                    Role
                 </button>
 
             </div>
@@ -155,5 +160,11 @@ export default {
 
 .w_160px {
     width: 160px;
+}
+
+@media (max-width:790px) {
+    .col-8 {
+        width: 100%;
+    }
 }
 </style>

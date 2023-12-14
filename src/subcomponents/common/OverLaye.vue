@@ -7,7 +7,7 @@ export default {
 
 <template>
     <div class="overlay">
-        <img src="../assets/img/loader.gif" class="w-96 h-auto">
+        <!-- <img src="../assets/img/loader.gif" class="w-96 h-auto"> -->
     </div>
 </template>
 

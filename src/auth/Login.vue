@@ -66,6 +66,10 @@ export default {
             };
         },
 
+        goToForgetPassword() {
+            this.$router.push({ name: 'Forget_password' });
+        }
+
         // async login() {
 
         //     this.fromSubmited = true
@@ -216,8 +220,9 @@ export default {
                         <button type="submit" class="btn-regular btn-w-full" :disabled="loginBtn">Log In</button>
 
                         <div class="text-right">
-                            <p class="color-Grey_50 text-base_regular">I have <a href="#" class="color_violet">forget
-                                    password !</a>
+                            <p class="color-Grey_50 text-base_regular">I have
+                                <span @click="goToForgetPassword" class="color_violet cursor-pointer">forget
+                                    password !</span>
                             </p>
                         </div>
 

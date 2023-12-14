@@ -71,6 +71,11 @@ const router = createRouter({
       component: () => import('../auth/Login.vue')
     },
     {
+      path: '/forget-password',
+      name: 'Forget_password',
+      component: () => import('../auth/Forget_password.vue')
+    },
+    {
       path: '/page-not-found',
       name: '404',
       component: () => import('../pages/404.vue'),
@@ -86,7 +91,7 @@ router.beforeEach(async (to) => {
   const alertStore = useAlertStore();
   alertStore.clear();
 
-  const publicPages = ['/log-in'];
+  const publicPages = ['/log-in', '/forget-password'];
   const authRequired = !publicPages.includes(to.path);
   const authStore = useAuthStore();
   if (authRequired && !authStore.user) {

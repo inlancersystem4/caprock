@@ -343,4 +343,23 @@ export default {
     height: 100%;
     display: none;
 }
+
+@media (max-width:790px) {
+    .row {
+        flex-wrap: wrap-reverse;
+        gap: 24px;
+    }
+
+    .col-8 {
+        width: 100%;
+    }
+
+    .col-2 {
+        width: 100%;
+    }
+
+    .user_pic{
+        margin: auto;
+    }
+}
 </style>
