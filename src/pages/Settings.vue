@@ -18,6 +18,12 @@ export default {
                     sub_title: "Manage your Account details",
                     icon: "/src/assets/img/icons/taxes.svg",
                     link: "/accounts"
+                },
+                {
+                    title: "Bank Details",
+                    sub_title: "Manage your Bank details",
+                    icon: "/src/assets/img/icons/taxes.svg",
+                    link: "/account-detail"
                 }
             ]
         }

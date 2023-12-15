@@ -14,7 +14,27 @@ export default {
                     card_balnce: "32000",
                     bank: "sbi"
                 }
-            ]
+            ],
+            chartData: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [
+                    {
+                        label: 'Today',
+                        backgroundColor: '#f87',
+                        data: [40, 39, 10, 40, 39, 800, 40]
+                    },
+                    {
+                        label: 'This Week',
+                        backgroundColor: '#f82',
+                        data: [400, 12, 90, 120, 60, 80, 40]
+                    },
+                    {
+                        label: 'This Month',
+                        backgroundColor: '#f29',
+                        data: [20, 120, 160, 180, 90, 20, 220]
+                    }
+                ],
+            },
         }
     },
 }
@@ -64,7 +84,7 @@ export default {
 
                         </div>
 
-                        <Chart1 />
+                        <Chart1 :chartData="chartData" />
 
                     </div>
 
